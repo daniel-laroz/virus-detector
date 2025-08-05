@@ -27,6 +27,22 @@ Built as part of a systems programming lab using low-level Linux techniques, mem
 - Interactive menu-driven CLI interface
 - Memory-safe (verified using Valgrind)
 
+## 🐳 Running in 32-bit Linux using Docker
+
+Replace `/full/path/to/virus-detector` with the actual path to your local folder:
+
+```bash
+$ docker run --platform linux/386 --privileged --name my-linux32 \
+  -it -v "/full/path/to/virus-detector:/virus-detector" \
+  ubuntu:18.04 bash
+
+🛠️ Inside the container:
+
+```bash
+$ apt update
+$ apt install -y build-essential valgrind
+$ cd /virus-detector
+
 ## 💡 Example Run
 
 ```bash
@@ -82,20 +98,3 @@ $ ./infected
 This file is infected,
 Clean me, Please! 
 # ./infected doesn't print 'I am virus1!' anymore.
-
-
-## 🐳 Running in 32-bit Linux using Docker
-
-Replace `/full/path/to/virus-detector` with the actual path to your local folder:
-
-```bash
-$ docker run --platform linux/386 --privileged --name my-linux32 \
-  -it -v "/full/path/to/virus-detector:/virus-detector" \
-  ubuntu:18.04 bash
-
-🛠️ Inside the container:
-
-```bash
-$ apt update
-$ apt install -y build-essential valgrind
-$ cd /virus-detector
