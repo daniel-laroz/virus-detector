@@ -41,7 +41,7 @@ $ docker run --platform linux/386 --privileged --name my-linux32 \
 $ apt update
 $ apt install -y build-essential valgrind
 $ cd /virus-detector
-'''
+```
 
 ## 💡 Example Run
 
@@ -98,4 +98,4 @@ $ ./infected
 This file is infected,
 Clean me, Please! 
 # ./infected doesn't print 'I am virus1!' anymore.
-'''
+```
