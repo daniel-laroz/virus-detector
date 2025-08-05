@@ -43,7 +43,7 @@ $ apt update
 $ apt install -y build-essential valgrind
 $ cd /virus-detector
 
-## 💡 Example Run
+# 💡 Example Run
 
 ```bash
 
