@@ -1,67 +1,101 @@
+## ⚠️ Disclaimer – Safe Educational Project
+
+This project is **strictly for educational purposes** and does **not contain any real malware**.
+
+- The file named `infected` is **not harmful** – it is a harmless executable that simply prints:
+This file is infected,
+I am virus1!
+Clean me, Please!
+
+- All “virus signatures” in this project are **fake** and used only to simulate basic virus detection.
+- No part of this project is capable of spreading, modifying other software, or causing damage.
+
+✅ This lab was developed as part of a university course on systems programming.
+
+
 # Virus Detector
 
-A C program that detects and neutralizes binary viruses in executables.
-
-This project was developed as part of a systems programming lab at Ben-Gurion University, focusing on binary file manipulation and memory-safe C programming.  
-It runs on a 32-bit Linux environment.
-
----
+A C program that detects and neutralizes binary viruses in ELF executables.  
+Built as part of a systems programming lab using low-level Linux techniques, memory-safe code, and linked lists.
 
 ## 🧠 Features
 
-- Loads virus signatures from custom binary signature files
-- Displays virus names, signature lengths, and hex signatures
-- Scans suspected executable files for known viruses
-- Neutralizes detected viruses by overwriting them with a `RET` instruction
-- CLI menu-based interface
-- Written in pure C using low-level file I/O and dynamic memory
+- Reads virus signatures from a binary file (`signatures-B` or `signatures-L`)  
+- Stores signatures in a linked list structure (`struct link`)
+- Detects virus patterns in infected executable files using naive matching
+- Neutralizes viruses by patching their code with a `RET` instruction
+- Interactive menu-driven CLI interface
+- Memory-safe (verified using Valgrind)
 
----
-
-## 📁 File Overview
-
-| File           | Description |
-|----------------|-------------|
-| `AntiVirus.c`  | Main C source file containing all program logic |
-| `makefile`     | For compiling the program |
-| `signatures-B` | Virus signature file (big-endian format) |
-| `signatures-L` | Virus signature file (little-endian format) |
-| `infected`     | Test executable that prints `I am virus1!` — used to verify detection and neutralization |
-
----
-
-## 🖥️ Menu Interface
-
-After compilation, the program runs an infinite menu loop:
-
-Load signatures
-
-Print signatures
-
-Detect viruses
-
-Fix file
-
-Quit
-
-
-### Detect viruses
-Scans a suspected file (given as a command-line argument) for known virus signatures, and prints:
-- Start offset
-- Virus name
-- Signature size
-
-### Fix file
-Neutralizes detected viruses by overwriting their first byte with a `RET` instruction (0xC3), effectively canceling their behavior.
-
----
-
-## 🐳 Running on a 64-bit Machine (via Docker)
-
-Use Docker with a 32-bit Linux environment:
+## 💡 Example Run
 
 ```bash
-docker run -it --rm -v $(pwd):/work -w /work i386/ubuntu bash
-apt update && apt install -y build-essential valgrind
-make
-./AntiVirus infected
+
+$ chmod u+x infected
+$ ./infected
+
+This file is infected,
+I am virus1!
+Clean me, Please!
+
+$ make
+$ ./AntiVirus infected
+
+Select operation from the following menu (ctrl^D for exit):
+1) Load signatures
+2) Print signatures
+3) Detect viruses
+4) Fix file
+5) Quit
+
+option : 1
+Within bounds
+Enter signature file name: signatures-B (or signatures-L)
+DONE.
+
+option : 2
+Within bounds
+Virus name: Doom
+Virus size: 19
+signature:
+B8 04 00 00 00 8B 5C 24 04 8B 4C 24 08 8B 54 24 0C CD 80 
+...
+DONE.
+
+option : 3
+Within bounds
+Virus detected!
+Starting byte location: 263
+Virus name: Doom
+Virus signature size: 19
+DONE.
+
+option : 4
+Within bounds
+DONE.
+
+option : 5
+Within bounds
+Quitting...
+
+$ ./infected
+This file is infected,
+Clean me, Please! 
+# ./infected doesn't print 'I am virus1!' anymore.
+
+
+## 🐳 Running in 32-bit Linux using Docker
+
+Replace `/full/path/to/virus-detector` with the actual path to your local folder:
+
+```bash
+$ docker run --platform linux/386 --privileged --name my-linux32 \
+  -it -v "/full/path/to/virus-detector:/virus-detector" \
+  ubuntu:18.04 bash
+
+🛠️ Inside the container:
+
+```bash
+$ apt update
+$ apt install -y build-essential valgrind
+$ cd /virus-detector
